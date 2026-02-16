@@ -26,10 +26,9 @@ PKG_CONFIG_DEPENDS:= \
 
 LUCI_TITLE:=LuCI support for PassWall 2
 LUCI_PKGARCH:=all
-# 【修改点 1】移除了 +v2ray-geoip, +v2ray-geosite
 LUCI_DEPENDS:=+coreutils +coreutils-base64 +coreutils-nohup +curl \
 	+ip-full +libuci-lua +lua +luci-compat +luci-lib-jsonc +resolveip +tcping \
-	+xray-core +geoview\
+	+xray-core +v2ray-geoip, +v2ray-geosite +geoview\
 	+unzip \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_IPv6_Nat:ip6tables-mod-nat
 
@@ -51,7 +50,7 @@ config PACKAGE_$(PKG_NAME)_Iptables_Transparent_Proxy
 	select PACKAGE_ipset
 	select PACKAGE_iptables
 	select PACKAGE_iptables-nft
-	# 【修改点 2】如果是为了兼容新内核，可以考虑删除 legacy 依赖
+	# 【修改点 1】如果是为了兼容新内核，可以考虑删除 legacy 依赖
 	select PACKAGE_iptables-zz-legacy
 	select PACKAGE_iptables-mod-conntrack-extra
 	select PACKAGE_iptables-mod-iprange
@@ -87,7 +86,7 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy
 	select PACKAGE_naiveproxy
 	default n
 
-# 【修改点 3】删除了整个 Shadowsocks_Libev 和 ShadowsocksR_Libev 的配置段
+# 【修改点 2】删除了整个 Shadowsocks_Libev 和 ShadowsocksR_Libev 的配置段
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust_Client
 	bool "Include Shadowsocks Rust Client"
