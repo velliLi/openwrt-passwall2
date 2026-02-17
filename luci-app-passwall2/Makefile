@@ -11,18 +11,27 @@ PKG_RELEASE:=1
 PKG_PO_VERSION:=$(PKG_VERSION)
 
 PKG_CONFIG_DEPENDS:= \
-    CONFIG_PACKAGE_$(PKG_NAME)_Nftables_Transparent_Proxy \
-    CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_SingBox
-
+	CONFIG_PACKAGE_$(PKG_NAME)_Iptables_Transparent_Proxy \
+	CONFIG_PACKAGE_$(PKG_NAME)_Nftables_Transparent_Proxy \
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Haproxy \
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Hysteria \
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_IPv6_Nat \
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy \
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust_Client \
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust_Server \
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Simple_Obfs \
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_SingBox \
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_tuic_client \
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_V2ray_Plugin
 
 LUCI_TITLE:=LuCI support for PassWall 2
 LUCI_PKGARCH:=all
+# 【修改点 1】移除了 +xray-core 
 LUCI_DEPENDS:=+coreutils +coreutils-base64 +coreutils-nohup +curl \
-    +ip-full +libuci-lua +lua +luci-compat +luci-lib-jsonc +resolveip +tcping \
-    +geoview \
-    +unzip \
-    +PACKAGE_$(PKG_NAME)_INCLUDE_IPv6_Nat:ip6tables-mod-nat
-
+	+ip-full +libuci-lua +lua +luci-compat +luci-lib-jsonc +resolveip +tcping \
+	+geoview, +v2ray-geoip, +v2ray-geosite\
+	+unzip \
+	+PACKAGE_$(PKG_NAME)_INCLUDE_IPv6_Nat:ip6tables-mod-nat
 
 define Package/$(PKG_NAME)/config
 menu "Configuration"
@@ -42,7 +51,7 @@ config PACKAGE_$(PKG_NAME)_Iptables_Transparent_Proxy
 	select PACKAGE_ipset
 	select PACKAGE_iptables
 	select PACKAGE_iptables-nft
-	# 【修改点 1】如果是为了兼容新内核，可以考虑删除 legacy 依赖
+	# 【修改点 2】如果是为了兼容新内核，可以考虑删除 legacy 依赖
 	select PACKAGE_iptables-zz-legacy
 	select PACKAGE_iptables-mod-conntrack-extra
 	select PACKAGE_iptables-mod-iprange
@@ -78,7 +87,7 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy
 	select PACKAGE_naiveproxy
 	default n
 
-# 【修改点 2】删除了整个 Shadowsocks_Libev 和 ShadowsocksR_Libev 的配置段
+# 【修改点 3】删除了整个 Shadowsocks_Libev 和 ShadowsocksR_Libev 的配置段
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust_Client
 	bool "Include Shadowsocks Rust Client"
