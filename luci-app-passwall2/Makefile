@@ -11,26 +11,22 @@ PKG_RELEASE:=1
 PKG_PO_VERSION:=$(PKG_VERSION)
 
 PKG_CONFIG_DEPENDS:= \
-	CONFIG_PACKAGE_$(PKG_NAME)_Iptables_Transparent_Proxy \
-	CONFIG_PACKAGE_$(PKG_NAME)_Nftables_Transparent_Proxy \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Haproxy \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Hysteria \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_IPv6_Nat \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust_Client \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust_Server \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Simple_Obfs \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_SingBox \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_tuic_client \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_V2ray_Plugin
+    CONFIG_PACKAGE_sing-box \
+    CONFIG_PACKAGE_geoip \
+    CONFIG_PACKAGE_geosite \
+    CONFIG_PACKAGE_geoview
 
 LUCI_TITLE:=LuCI support for PassWall 2
 LUCI_PKGARCH:=all
-LUCI_DEPENDS:=+coreutils +coreutils-base64 +coreutils-nohup +curl \
-	+ip-full +libuci-lua +lua +luci-compat +luci-lib-jsonc +resolveip +tcping \
-	+xray-core +v2ray-geoip +v2ray-geosite +geoview\
-	+unzip \
-	+PACKAGE_$(PKG_NAME)_INCLUDE_IPv6_Nat:ip6tables-mod-nat
+LUCI_DEPENDS:= \
+    +chinadns-ng \
+    +dns2socks \
+    +microsocks \
+    +ipt2socks \
+    +sing-box \
+    +geoip \
+    +geosite
+
 
 define Package/$(PKG_NAME)/config
 menu "Configuration"
