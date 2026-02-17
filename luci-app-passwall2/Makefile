@@ -11,21 +11,17 @@ PKG_RELEASE:=1
 PKG_PO_VERSION:=$(PKG_VERSION)
 
 PKG_CONFIG_DEPENDS:= \
-    CONFIG_PACKAGE_sing-box \
-    CONFIG_PACKAGE_geoip \
-    CONFIG_PACKAGE_geosite \
-    CONFIG_PACKAGE_geoview
+    CONFIG_PACKAGE_$(PKG_NAME)_Nftables_Transparent_Proxy \
+    CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_SingBox
+
 
 LUCI_TITLE:=LuCI support for PassWall 2
 LUCI_PKGARCH:=all
-LUCI_DEPENDS:= \
-    +chinadns-ng \
-    +dns2socks \
-    +microsocks \
-    +ipt2socks \
-    +sing-box \
-    +geoip \
-    +geosite
+LUCI_DEPENDS:=+coreutils +coreutils-base64 +coreutils-nohup +curl \
+    +ip-full +libuci-lua +lua +luci-compat +luci-lib-jsonc +resolveip +tcping \
+    +geoview \
+    +unzip \
+    +PACKAGE_$(PKG_NAME)_INCLUDE_IPv6_Nat:ip6tables-mod-nat
 
 
 define Package/$(PKG_NAME)/config
