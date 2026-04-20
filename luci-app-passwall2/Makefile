@@ -10,29 +10,19 @@ PKG_VERSION:=26.4.20
 PKG_RELEASE:=1
 PKG_PO_VERSION:=$(PKG_VERSION)
 
+#去除不需要的协议
 PKG_CONFIG_DEPENDS:= \
-	CONFIG_PACKAGE_$(PKG_NAME)_Iptables_Transparent_Proxy \
 	CONFIG_PACKAGE_$(PKG_NAME)_Nftables_Transparent_Proxy \
 	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Haproxy \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Hysteria \
 	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_IPv6_Nat \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Libev_Client \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Libev_Server \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust_Client \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust_Server \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Libev_Client \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Libev_Server \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Simple_Obfs \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_SingBox \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_tuic_client \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_V2ray_Plugin
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_SingBox
 
 LUCI_TITLE:=LuCI support for PassWall 2
 LUCI_PKGARCH:=all
+#去除XrayCore
 LUCI_DEPENDS:=+coreutils +coreutils-base64 +coreutils-nohup +curl \
 	+ip-full +libuci-lua +lua +luci-compat +luci-lib-jsonc +resolveip +tcping \
-	+xray-core +geoview +v2ray-geoip +v2ray-geosite \
+	+geoview +v2ray-geoip +v2ray-geosite\
 	+unzip \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_IPv6_Nat:ip6tables-mod-nat
 
@@ -89,39 +79,7 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy
 	select PACKAGE_naiveproxy
 	default n
 
-config PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Libev_Client
-	bool "Include Shadowsocks Libev Client"
-	select PACKAGE_shadowsocks-libev-ss-local
-	select PACKAGE_shadowsocks-libev-ss-redir
-	default y
-
-config PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Libev_Server
-	bool "Include Shadowsocks Libev Server"
-	select PACKAGE_shadowsocks-libev-ss-server
-	default n
-
-config PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust_Client
-	bool "Include Shadowsocks Rust Client"
-	depends on !i386
-	select PACKAGE_shadowsocks-rust-sslocal
-	default y if aarch64||x86_64
-
-config PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Rust_Server
-	bool "Include Shadowsocks Rust Server"
-	depends on !i386
-	select PACKAGE_shadowsocks-rust-ssserver
-	default n
-
-config PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Libev_Client
-	bool "Include ShadowsocksR Libev Client"
-	select PACKAGE_shadowsocksr-libev-ssr-local
-	select PACKAGE_shadowsocksr-libev-ssr-redir
-	default y
-
-config PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Libev_Server
-	bool "Include ShadowsocksR Libev Server"
-	select PACKAGE_shadowsocksr-libev-ssr-server
-	default n
+#删除SS
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_Simple_Obfs
 	bool "Include Simple-Obfs (Shadowsocks Plugin)"
