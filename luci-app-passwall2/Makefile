@@ -20,11 +20,10 @@ PKG_CONFIG_DEPENDS:= \
 LUCI_TITLE:=LuCI support for PassWall 2
 LUCI_PKGARCH:=all
 #去除XrayCore
-LUCI_DEPENDS:=+coreutils +coreutils-base64 +coreutils-nohup +curl \
+LUCI_DEPENDS:=+curl \
 	+ip-full +libuci-lua +lua +luci-compat +luci-lib-jsonc +resolveip +tcping \
 	+geoview +v2ray-geoip +v2ray-geosite\
-	+unzip \
-	+PACKAGE_$(PKG_NAME)_INCLUDE_IPv6_Nat:ip6tables-mod-nat
+	+unzip 
 
 define Package/$(PKG_NAME)/config
 menu "Configuration"
@@ -35,22 +34,6 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_IPv6_Nat
 	default n
 
 if PACKAGE_$(PKG_NAME)
-
-config PACKAGE_$(PKG_NAME)_Iptables_Transparent_Proxy
-	bool "Iptables Transparent Proxy"
-	select PACKAGE_chinadns-ng
-	select PACKAGE_dnsmasq-full
-	select PACKAGE_dnsmasq_full_ipset
-	select PACKAGE_ipset
-	select PACKAGE_iptables
-	select PACKAGE_iptables-nft
-	select PACKAGE_iptables-zz-legacy
-	select PACKAGE_iptables-mod-conntrack-extra
-	select PACKAGE_iptables-mod-iprange
-	select PACKAGE_iptables-mod-socket
-	select PACKAGE_iptables-mod-tproxy
-	select PACKAGE_kmod-ipt-nat
-	default y if ! PACKAGE_firewall4
 
 config PACKAGE_$(PKG_NAME)_Nftables_Transparent_Proxy
 	bool "Nftables Transparent Proxy"
@@ -68,39 +51,12 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_Haproxy
 	select PACKAGE_haproxy
 	default y if aarch64||arm||i386||x86_64
 
-config PACKAGE_$(PKG_NAME)_INCLUDE_Hysteria
-	bool "Include Hysteria"
-	select PACKAGE_hysteria
-	default n
-
-config PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy
-	bool "Include NaiveProxy"
-	depends on !(arc||armeb||loongarch64||mips||mips64||powerpc||TARGET_gemini)
-	select PACKAGE_naiveproxy
-	default n
-
-#删除SS
-
-config PACKAGE_$(PKG_NAME)_INCLUDE_Simple_Obfs
-	bool "Include Simple-Obfs (Shadowsocks Plugin)"
-	select PACKAGE_simple-obfs-client
-	default y
-
 config PACKAGE_$(PKG_NAME)_INCLUDE_SingBox
 	bool "Include Sing-Box"
 	select PACKAGE_sing-box
 	default y if aarch64||arm||i386||x86_64
 
-config PACKAGE_$(PKG_NAME)_INCLUDE_tuic_client
-	bool "Include tuic-client"
-	depends on aarch64||arm||i386||x86_64
-	select PACKAGE_tuic-client
-	default n
-
-config PACKAGE_$(PKG_NAME)_INCLUDE_V2ray_Plugin
-	bool "Include V2ray-Plugin (Shadowsocks Plugin)"
-	select PACKAGE_v2ray-plugin
-	default y if aarch64||arm||i386||x86_64
+#删除SS、Simple_Obfs、tuic_client、V2ray_Plugin、Hysteria、NaiveProxy
 
 endif
 endmenu
