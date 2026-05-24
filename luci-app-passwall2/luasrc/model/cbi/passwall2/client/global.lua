@@ -2,7 +2,6 @@ api = require "luci.passwall2.api"
 appname = api.appname
 datatypes = api.datatypes
 has_singbox = api.finded_com("sing-box")
-has_xray = api.finded_com("xray")
 
 m = Map(appname)
 api.set_apply_on_parse(m)
@@ -94,7 +93,7 @@ current_node_id = m.uci:get(appname, global_cfgid, "node")
 current_node = current_node_id and m.uci:get_all(appname, current_node_id) or {}
 
 -- Shunt Start
-if (has_singbox or has_xray) and #nodes_table > 0 then
+if has_singbox and #nodes_table > 0 then
 	if #normal_list > 0 or #iface_list > 0 then
 		if current_node.protocol == "_shunt" then
 			local shunt_lua = loadfile("/usr/lib/lua/luci/model/cbi/passwall2/client/include/shunt_options.lua")
@@ -258,7 +257,7 @@ o.remove = function(self, section)
 	local node_value = s.fields["node"]:formvalue(global_cfgid)
 	if node_value then
 		local node_t = m:get(node_value) or {}
-		if node_t.type == "Xray" or node_t.type == "sing-box" then
+		if node_t.type == "sing-box" then
 			AbstractValue.remove(self, section)
 		end
 	end
@@ -355,7 +354,7 @@ o.default = n + 1080
 o.datatype = "port"
 o.rmempty = false
 
-if has_singbox or has_xray then
+if has_singbox then
 	o = s2:option(Value, "http_port", "HTTP " .. translate("Listen Port") .. " " .. translate("0 is not use"))
 	o.default = 0
 	o.datatype = "port"

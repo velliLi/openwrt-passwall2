@@ -83,7 +83,7 @@ end
 
 s:append(Template(appname .. "/rule/rule_version"))
 
-s = m:section(TypedSection, "shunt_rules", "Sing-Box/Xray " .. translate("Shunt Rule"), "<a style='color: red'>" .. translate("Please note attention to the priority, the higher the order, the higher the priority.") .. "</a>")
+s = m:section(TypedSection, "shunt_rules", "Sing-Box " .. translate("Shunt Rule"), "<a style='color: red'>" .. translate("Please note attention to the priority, the higher the order, the higher the priority.") .. "</a>")
 s.template = "cbi/tblsection"
 s.anonymous = false
 s.addremove = true

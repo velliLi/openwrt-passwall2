@@ -74,6 +74,7 @@ function index()
 	entry({"admin", "services", appname, "clear_log"}, call("clear_log")).leaf = true
 	entry({"admin", "services", appname, "index_status"}, call("index_status")).leaf = true
 	entry({"admin", "services", appname, "haproxy_status"}, call("haproxy_status")).leaf = true
+
 	entry({"admin", "services", appname, "socks_status"}, call("socks_status")).leaf = true
 	entry({"admin", "services", appname, "connect_status"}, call("connect_status")).leaf = true
 	entry({"admin", "services", appname, "ping_node"}, call("ping_node")).leaf = true
@@ -361,7 +362,7 @@ function add_node()
 		uci:set(appname, uuid, "group", group)
 	end
 
-	uci:set(appname, uuid, "type", "Xray")
+	uci:set(appname, uuid, "type", "sing-box")
 
 	if redirect == "1" then
 		api.uci_save(uci, appname)

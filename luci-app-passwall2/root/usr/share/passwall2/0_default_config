@@ -34,8 +34,6 @@ config global_forwarding
 	option tcp_proxy_way 'redirect'
 	option ipv6_tproxy '0'
 
-config global_xray
-	option sniffing_override_dest '0'
 
 config global_other
 	option auto_detection_time 'tcping'
@@ -51,8 +49,6 @@ config global_rules
 
 config global_app
 	option geoview_file '/usr/bin/geoview'
-	option xray_file '/usr/bin/xray'
-	option hysteria_file '/usr/bin/hysteria'
 	option sing_box_file '/usr/bin/sing-box'
 
 config global_subscribe
@@ -90,7 +86,7 @@ config shunt_rules 'Russia'
 
 config nodes 'examplenode'
 	option remarks 'Example'
-	option type 'Xray'
+	option type 'sing-box'
 	option protocol 'socks'
 	option address 'passwall2.github'
 	option port '1080'
@@ -102,7 +98,7 @@ config nodes 'examplenode'
 
 config nodes 'rulenode'
 	option remarks 'rulenode'
-	option type 'Xray'
+	option type 'sing-box'
 	option protocol '_shunt'
 	option default_node 'examplenode'
 	option domainStrategy 'IPOnDemand'

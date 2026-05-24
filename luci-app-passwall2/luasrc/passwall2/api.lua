@@ -504,7 +504,7 @@ function get_valid_nodes()
 			if port and e.address then
 				local address = e.address
 				if is_ip(address) or datatypes.hostname(address) then
-					if (e.type == "sing-box" or e.type == "Xray") and e.protocol then
+					if e.type == "sing-box" and e.protocol then
 						local protocol = e.protocol
 						if protocol == "vmess" then
 							protocol = "VMess"
@@ -598,7 +598,7 @@ function get_node_remarks(n)
 		if n.protocol and (n.protocol == "_balancing" or n.protocol == "_shunt" or n.protocol == "_iface" or n.protocol == "_urltest") then
 			remarks = trim("%s：[%s]" % {type_name .. " " .. i18n.translatef(n.protocol), n.remarks})
 		else
-			if (n.type == "sing-box" or n.type == "Xray") and n.protocol then
+			if n.type == "sing-box" and n.protocol then
 				local protocol = n.protocol
 				if protocol == "vmess" then
 					protocol = "VMess"

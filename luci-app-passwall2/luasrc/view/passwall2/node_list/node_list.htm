@@ -9,7 +9,7 @@ local node = api.uci_get_type("global", "node")
 if node then
 	local node_type = api.uci_get_type_id(node, "type")
 	local node_protocol = api.uci_get_type_id(node, "protocol")
-	if node_type == "Xray" and node_protocol == "_shunt" then
+	if node_type == "sing-box" and node_protocol == "_shunt" then
 		default_node_type = node_protocol
 		uci:foreach(appname, "shunt_rules", function(e)
 			if e[".name"] and e.remarks then
@@ -866,7 +866,7 @@ table td, .table .td {
 		let remarks = o["remarks"] || "";
 		let type = o["type"] || "";
 		str += "<input type='hidden' id='cbid.<%=appname%>." + o[".name"] + ".type' value='" + type + "'/>";
-		if (type == "sing-box" || type == "Xray") {
+		if (type == "sing-box") {
 			let protocol = o["protocol"]
 			let p = "";
 			if (protocol == "_balancing") {

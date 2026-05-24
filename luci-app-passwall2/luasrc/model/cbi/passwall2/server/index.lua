@@ -47,7 +47,7 @@ e.rawhtml = true
 e.cfgvalue = function(t, n)
 	local str = ""
 	local type = m:get(n, "type") or ""
-	if type == "sing-box" or type == "Xray" then
+	if type == "sing-box" then
 		local protocol = m:get(n, "protocol") or ""
 		if protocol == "vmess" then
 			protocol = "VMess"

@@ -450,7 +450,7 @@ o.remove = function(self, section)
 	local node_value = s.fields["node"]:formvalue(arg[1])
 	if node_value then
 		local node_t = m:get(node_value) or {}
-		if node_t.type == "Xray" or node_t.type == "sing-box" then
+		if node_t.type == "sing-box" then
 			AbstractValue.remove(self, section)
 		end
 	end

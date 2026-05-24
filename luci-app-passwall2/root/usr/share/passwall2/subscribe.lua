@@ -25,28 +25,24 @@ local log = api.log
 local i18n = api.i18n
 uci:revert(appname)
 
-local has_ss = api.is_finded("ss-redir")
-local has_ss_rust = api.is_finded("sslocal")
-local has_ssr = api.is_finded("ssr-local") and api.is_finded("ssr-redir")
+local has_ss = false
+local has_ss_rust = false
+local has_ssr = false
 local has_singbox = api.finded_com("sing-box")
-local has_xray = api.finded_com("xray")
-local has_hysteria2 = api.finded_com("hysteria")
+local has_xray = false
+local has_hysteria2 = false
 local DEFAULT_ALLOWINSECURE = true
 local DEFAULT_FILTER_KEYWORD_MODE = uci:get(appname, "@global_subscribe[0]", "filter_keyword_mode") or "0"
 local DEFAULT_FILTER_KEYWORD_DISCARD_LIST = uci:get(appname, "@global_subscribe[0]", "filter_discard_list") or {}
 local DEFAULT_FILTER_KEYWORD_KEEP_LIST = uci:get(appname, "@global_subscribe[0]", "filter_keep_list") or {}
 -- Nodes should be retrieved using the core type (if not set on the node subscription page, the default type will be used automatically).
-local DEFAULT_SS_TYPE = api.get_core("ss_type", {{has_ss,"shadowsocks-libev"},{has_ss_rust,"shadowsocks-rust"},{has_singbox,"sing-box"},{has_xray,"xray"}})
-local DEFAULT_TROJAN_TYPE = api.get_core("trojan_type", {{has_singbox,"sing-box"},{has_xray,"xray"}})
-local DEFAULT_VMESS_TYPE = api.get_core("vmess_type", {{has_xray,"xray"},{has_singbox,"sing-box"}})
-local DEFAULT_VLESS_TYPE = api.get_core("vless_type", {{has_xray,"xray"},{has_singbox,"sing-box"}})
-local DEFAULT_HYSTERIA2_TYPE = api.get_core("hysteria2_type", {{has_hysteria2,"hysteria2"},{has_singbox,"sing-box"},{has_xray,"xray"}})
+local DEFAULT_SS_TYPE = "sing-box"
+local DEFAULT_TROJAN_TYPE = "sing-box"
+local DEFAULT_VMESS_TYPE = "sing-box"
+local DEFAULT_VLESS_TYPE = "sing-box"
+local DEFAULT_HYSTERIA2_TYPE = "sing-box"
 local core_has = {
-	["xray"] = has_xray,
 	["sing-box"] = has_singbox,
-	["shadowsocks-libev"] = has_ss,
-	["shadowsocks-rust"] = has_ss_rust,
-	["hysteria2"] = has_hysteria2
 }
 -- Determine whether to filter node keywords
 local function is_filter_keyword(sub_cfg, value)
@@ -219,14 +215,12 @@ do
 				remarks = i18n.translatef("HAProxy node list [%s]", i),
 				currentNode = node_id and uci:get_all(appname, node_id) or nil,
 				set = function(o, server)
-					-- Modify the LBS value only if it is not in IP:Port format.
 					if not is_ip_port(t[option]) then
 						uci:set(appname, t[".name"], option, server)
 						o.newNodeId = server
 					end
 				end,
 				delete = function(o)
-					-- Deletion is only performed if the current LBS value is not in IP:port format.
 					if not is_ip_port(t[option]) then
 						uci:delete(appname, t[".name"])
 					end
@@ -293,7 +287,7 @@ do
 				
 			end
 		elseif node.protocol and node.protocol == '_balancing' then
-			local flag = i18n.translatef("Xray Load Balancing node [%s] list", node_id)
+			local flag = i18n.translatef("Load Balancing node [%s] list", node_id)
 			local currentNodes = {}
 			local newNodes = {}
 			if node.balancing_node then
@@ -329,7 +323,7 @@ do
 				CONFIG[#CONFIG + 1] = {
 					log = true,
 					id = node_id,
-					remarks = i18n.translatef("Xray Load Balancing node [%s] backup node", node_id),
+					remarks = i18n.translatef("Load Balancing node [%s] backup node", node_id),
 					currentNode = uci:get_all(appname, currentNode.fallback_node) or nil,
 					set = function(o, server)
 						uci:set(appname, node_id, "fallback_node", server)
@@ -450,15 +444,7 @@ end
 
 -- Configure the SS protocol implementation type
 local function set_ss_implementation(ss_type, result)
-	if ss_type == "shadowsocks-libev" and has_ss then
-		result.type = "SS"
-	elseif ss_type == "shadowsocks-rust" and has_ss_rust then
-		result.type = 'SS-Rust'
-	elseif ss_type == "xray" and has_xray then
-		result.type = 'Xray'
-		result.protocol = 'shadowsocks'
-		result.transport = 'raw'
-	elseif ss_type == "sing-box" and has_singbox then
+	if ss_type == "sing-box" and has_singbox then
 		result.type = 'sing-box'
 		result.protocol = 'shadowsocks'
 	else

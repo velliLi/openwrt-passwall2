@@ -13,9 +13,7 @@ PKG_PO_VERSION:=$(PKG_VERSION)
 #去除不需要的协议
 PKG_CONFIG_DEPENDS:= \
 	CONFIG_PACKAGE_$(PKG_NAME)_Nftables_Transparent_Proxy \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Haproxy \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_IPv6_Nat \
-	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_SingBox
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_IPv6_Nat
 
 LUCI_TITLE:=LuCI support for PassWall 2
 LUCI_PKGARCH:=all
@@ -23,7 +21,7 @@ LUCI_PKGARCH:=all
 LUCI_DEPENDS:=+curl \
 	+ip-full +libuci-lua +lua +luci-compat +luci-lib-jsonc +resolveip +tcping \
 	+geoview +v2ray-geoip +v2ray-geosite\
-	+unzip 
+	+unzip +sing-box
 
 define Package/$(PKG_NAME)/config
 menu "Configuration"
@@ -46,15 +44,7 @@ config PACKAGE_$(PKG_NAME)_Nftables_Transparent_Proxy
 	select PACKAGE_kmod-nft-nat
 	default y if PACKAGE_firewall4
 
-config PACKAGE_$(PKG_NAME)_INCLUDE_Haproxy
-	bool "Include Haproxy"
-	select PACKAGE_haproxy
-	default y if aarch64||arm||i386||x86_64
 
-config PACKAGE_$(PKG_NAME)_INCLUDE_SingBox
-	bool "Include Sing-Box"
-	select PACKAGE_sing-box
-	default y if aarch64||arm||i386||x86_64
 
 #删除SS、Simple_Obfs、tuic_client、V2ray_Plugin、Hysteria、NaiveProxy
 
