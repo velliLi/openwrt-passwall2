@@ -102,7 +102,7 @@ end
 
 o = s:option(ListValue, "domain_resolver", translate("Domain DNS Resolve"))
 o.description = translate("If the node address is a domain name, this DNS will be used for resolution.") .. "<br>" ..
-		translate("Supports only Xray or Sing-box node types.")
+		translate("Supports only Sing-box node types.")
 o:value("", translate("Auto"))
 o:value("tcp", "TCP")
 o:value("udp", "UDP")
@@ -261,7 +261,7 @@ o:value("", translate("Close(Not use)"))
 o:value("1", translate("Preproxy Node"))
 o:value("2", translate("Landing Node"))
 
-local descrStr = "Chained proxy works only with Xray or Sing-box nodes.<br>"
+local descrStr = "Chained proxy works only with Sing-box nodes.<br>"
 descrStr = descrStr .. "You can only use manual or imported nodes as chained nodes."
 descrStr = translate(descrStr) .. "<br>" .. translate("Only support a layer of proxy.")
 
@@ -278,7 +278,7 @@ o2.template = appname .. "/cbi/nodes_listvalue"
 o2.group = {}
 
 for k, v in pairs(nodes_table) do
-	if (v.type == "Xray" or v.type == "sing-box") and (not v.chain_proxy or v.chain_proxy == "") and v.add_mode ~= "2" then
+	if v.type == "sing-box" and (not v.chain_proxy or v.chain_proxy == "") and v.add_mode ~= "2" then
 		o1:value(v.id, v.remark)
 		o1.group[#o1.group+1] = (v.group and v.group ~= "") and v.group or translate("default")
 		o2:value(v.id, v.remark)
